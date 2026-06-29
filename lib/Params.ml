@@ -507,14 +507,16 @@ instead of
   abc
     ...
 end]}*)
-let is_special_beginend exp =
+let is_special_beginend (c : Conf.t) exp =
+  c.fmt_opts.begin_end_shortcut.v
+  &&
   match exp with
   | Pexp_match _ | Pexp_try _ | Pexp_function _ | Pexp_ifthenelse _ -> true
   | _ -> false
 
-let is_special_or_nested_special_beginend = function
-  | Pexp_beginend ({pexp_desc; _}, _) -> is_special_beginend pexp_desc
-  | exp -> is_special_beginend exp
+let is_special_or_nested_special_beginend c = function
+  | Pexp_beginend ({pexp_desc; _}, _) -> is_special_beginend c pexp_desc
+  | exp -> is_special_beginend c exp
 
 let raw_cmts_branch_pro (c : Conf.t) cmts =
   match c.fmt_opts.if_then_else.v with
@@ -576,7 +578,7 @@ let get_cases (c : Conf.t) ~fmt_infix_ext_attrs ~ctx ~first ~last
       ; pexp_attributes= []
       ; _ }
       when (not cmts_before)
-           && not (is_special_beginend nested_exp.pexp_desc) ->
+           && not (is_special_beginend c nested_exp.pexp_desc) ->
         let close_paren =
           let offset = if indent >= 2 then 2 - indent else 0 in
           fits_breaks " end" ~level:1 ~hint:(1000, offset) "end"
@@ -867,7 +869,7 @@ let get_if_then_else (c : Conf.t) ~cmts_before_opt ~has_cmts_before ~pro
     let ast = xbch.Ast.ast in
     match ast with
     | {pexp_desc= Pexp_beginend (nested_exp, _); _}
-      when is_special_beginend nested_exp.pexp_desc
+      when is_special_beginend c nested_exp.pexp_desc
            && not (has_cmts_before nested_exp.pexp_loc) ->
         (* [begin match/try/function/if … end] shortcut: keep [begin] glued
            to the body keyword. A leading comment on the body breaks the
@@ -894,7 +896,7 @@ let get_if_then_else (c : Conf.t) ~cmts_before_opt ~has_cmts_before ~pro
   let is_special_beginend_branch =
     match xbch.ast.pexp_desc with
     | Pexp_beginend (nested_exp, _) ->
-        is_special_beginend nested_exp.pexp_desc
+        is_special_beginend c nested_exp.pexp_desc
     | _ -> false
   in
   let wrap_parens ~wrap_breaks k =
@@ -967,7 +969,7 @@ let get_if_then_else (c : Conf.t) ~cmts_before_opt ~has_cmts_before ~pro
       | None -> (
         match xbch.ast.pexp_desc with
         | Pexp_beginend ({pexp_loc; pexp_desc; _}, _)
-          when is_special_beginend pexp_desc -> (
+          when is_special_beginend c pexp_desc -> (
           match cmts_before_opt pexp_loc with
           | Some cmts -> (raw_cmts_branch_pro c cmts, true)
           | None -> (default, false) )
@@ -980,7 +982,7 @@ let get_if_then_else (c : Conf.t) ~cmts_before_opt ~has_cmts_before ~pro
         branch_pro_with_cmts ~default:(branch_pro ~indent:0 ())
           ~guard:
             ( (not parens_bch)
-            && is_special_or_nested_special_beginend xbch.ast.pexp_desc )
+            && is_special_or_nested_special_beginend c xbch.ast.pexp_desc )
       in
       { box_branch= hovbox ~name:"Params.get_if_then_else `Compact" 2
       ; cond= cond ()
@@ -1021,7 +1023,7 @@ let get_if_then_else (c : Conf.t) ~cmts_before_opt ~has_cmts_before ~pro
       in
       let paren_glue =
         has_cmts && parens_bch
-        && is_special_or_nested_special_beginend xbch.ast.pexp_desc
+        && is_special_or_nested_special_beginend c xbch.ast.pexp_desc
       in
       let branch_pro, wrap_parens =
         if paren_glue then

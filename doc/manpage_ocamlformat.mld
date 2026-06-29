@@ -55,6 +55,14 @@ OPTIONS (CODE FORMATTING STYLE)
            assignment expression does not fit on a single line. The default
            value is end-line.
 
+       --begin-end-shortcut
+           Use the shortcut begin/end syntax for
+           match/try/function/if-then-else bodies in match cases and
+           if-then-else branches. When enabled (the default), begin is broken
+           onto its own line and glued to the body keyword (e.g. begin
+           match). When disabled, begin stays on the branch line (e.g. after
+           ->) and the body is indented below it. The flag is set by default.
+
        --break-before-in={fit-or-vertical|auto}
            Whether the line should break before the in keyword of a let
            binding. fit-or-vertical will always break the line before the in
@@ -322,6 +330,9 @@ OPTIONS (CODE FORMATTING STYLE)
            parentheses and adds indentation. align vertically aligns the
            nested pattern-matching under the encompassing pattern-matching.
            The default value is wrap.
+
+       --no-begin-end-shortcut
+           Unset begin-end-shortcut.
 
        --no-break-infix-before-func
            Unset break-infix-before-func.

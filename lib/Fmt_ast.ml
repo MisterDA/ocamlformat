@@ -2563,7 +2563,7 @@ and fmt_expression c ?(box = true) ?(pro = noop) ?eol ?parens
                            if Cmts.has_after c.cmts keyword_loc then
                              if
                                Params.is_special_or_nested_special_beginend
-                                 xbch.ast.pexp_desc
+                                 c.conf xbch.ast.pexp_desc
                              then
                                ( None
                                , Some
@@ -2601,6 +2601,7 @@ and fmt_expression c ?(box = true) ?(pro = noop) ?eol ?parens
                                  parens_bch
                                  && Params
                                     .is_special_or_nested_special_beginend
+                                      c.conf
                                       xbch.ast.pexp_desc
                                then (bp $ str "(", fun k -> k $ str ")")
                                else (bp, p.wrap_parens)

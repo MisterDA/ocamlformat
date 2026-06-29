@@ -23,6 +23,7 @@ No redundant values:
   disable-conf-attrs=false
   version-check=true
   assignment-operator=end-line (profile conventional (file .ocamlformat:1))
+  begin-end-shortcut=true (profile conventional (file .ocamlformat:1))
   break-before-in=fit-or-vertical (profile conventional (file .ocamlformat:1))
   break-cases=fit (profile conventional (file .ocamlformat:1))
   break-collection-expressions=fit-or-vertical (profile conventional (file .ocamlformat:1))
@@ -104,6 +105,7 @@ Redundant values from the conventional profile:
   disable-conf-attrs=false
   version-check=true
   assignment-operator=end-line (profile conventional (file .ocamlformat:1))
+  begin-end-shortcut=true (profile conventional (file .ocamlformat:1))
   break-before-in=fit-or-vertical (profile conventional (file .ocamlformat:1))
   break-cases=fit (profile conventional (file .ocamlformat:1))
   break-collection-expressions=fit-or-vertical (profile conventional (file .ocamlformat:1))
@@ -185,6 +187,7 @@ Redundant values from the ocamlformat profile:
   disable-conf-attrs=false
   version-check=true
   assignment-operator=end-line (profile ocamlformat (file .ocamlformat:1))
+  begin-end-shortcut=true (profile ocamlformat (file .ocamlformat:1))
   break-before-in=fit-or-vertical (profile ocamlformat (file .ocamlformat:1))
   break-cases=nested (profile ocamlformat (file .ocamlformat:1))
   break-collection-expressions=fit-or-vertical (profile ocamlformat (file .ocamlformat:1))

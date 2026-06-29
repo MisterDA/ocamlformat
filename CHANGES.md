@@ -6,6 +6,30 @@ profile. This started with version 0.26.0.
 
 ## unreleased
 
+### Added
+
+- Add `begin-end-shortcut` option (enabled by default) to control the shortcut
+  `begin`/`end` syntax for `match`/`try`/`function`/`if-then-else` bodies in
+  `match` cases and `if-then-else` branches. Disable it
+  (`--no-begin-end-shortcut`) to keep `begin` on the branch line, e.g. after
+  `->`, with the body indented below it.
+  (#2811, @MisterDA)
+  ```ocaml
+  (* begin-end-shortcut=true (default) *)
+  match () with
+  | () ->
+      begin match () with
+      | () -> ()
+      end
+
+  (* begin-end-shortcut=false *)
+  match () with
+  | () -> begin
+      match () with
+      | () -> ()
+    end
+  ```
+
 ### Fixed
 
 - Fix `begin match … end` (and `begin if … end`) branches: with

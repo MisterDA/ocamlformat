@@ -50,6 +50,7 @@ let conventional_profile from =
   let elt content = Elt.make content from in
   { align_symbol_open_paren= elt true
   ; assignment_operator= elt `End_line
+  ; begin_end_shortcut= elt true
   ; break_around_multiline_strings= elt false
   ; break_before_in= elt `Fit_or_vertical
   ; break_cases= elt `Fit
@@ -121,6 +122,7 @@ let ocamlformat_profile from =
   let elt content = Elt.make content from in
   { align_symbol_open_paren= elt true
   ; assignment_operator= elt `End_line
+  ; begin_end_shortcut= elt true
   ; break_around_multiline_strings= elt false
   ; break_before_in= elt `Fit_or_vertical
   ; break_cases= elt `Nested
@@ -190,6 +192,7 @@ let janestreet_profile from =
   let elt content = Elt.make content from in
   { align_symbol_open_paren= elt false
   ; assignment_operator= elt `Begin_line
+  ; begin_end_shortcut= elt true
   ; break_around_multiline_strings= elt true
   ; break_before_in= elt `Fit_or_vertical
   ; break_cases= elt `Fit_or_vertical
@@ -384,6 +387,22 @@ module Formatting = struct
       (fun conf elt ->
         update conf ~f:(fun f -> {f with assignment_operator= elt}) )
       (fun conf -> conf.fmt_opts.assignment_operator)
+
+  let begin_end_shortcut =
+    let doc =
+      "Use the shortcut $(b,begin)/$(b,end) syntax for \
+       $(b,match)/$(b,try)/$(b,function)/$(b,if-then-else) bodies in \
+       $(b,match) cases and $(b,if-then-else) branches. When enabled (the \
+       default), $(b,begin) is broken onto its own line and glued to the \
+       body keyword (e.g. $(b,begin match)). When disabled, $(b,begin) \
+       stays on the branch line (e.g. after $(b,->)) and the body is \
+       indented below it."
+    in
+    let names = ["begin-end-shortcut"] in
+    Decl.flag ~names ~default ~doc ~kind
+      (fun conf elt ->
+        update conf ~f:(fun f -> {f with begin_end_shortcut= elt}) )
+      (fun conf -> conf.fmt_opts.begin_end_shortcut)
 
   let break_before_in =
     let doc =
@@ -1345,6 +1364,7 @@ module Formatting = struct
   let options =
     Store.
       [ elt assignment_operator
+      ; elt begin_end_shortcut
       ; elt break_before_in
       ; elt break_cases
       ; elt break_collection_expressions

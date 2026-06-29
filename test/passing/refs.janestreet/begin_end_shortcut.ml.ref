@@ -1,0 +1,58 @@
+let match_in_match () =
+  match () with
+  | () ->
+    (match () with
+     | () -> ()
+     | aaaaaaaaaaaa -> aaaaaaaaaaa
+     | bbbbbbbbbb -> bbbbbbbbbbbbbbbbb)
+;;
+
+let try_in_match () =
+  match () with
+  | () ->
+    (try foo () with
+     | Not_found -> bar ()
+     | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa -> bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb)
+;;
+
+let function_in_match () =
+  match () with
+  | () ->
+    (function
+      | () -> ()
+      | aaaaaaaaaaaaaaaaaaaaaaaaaaaa -> aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa)
+;;
+
+let match_in_ite () =
+  if true
+  then (
+    match () with
+    | () -> ()
+    | aaaaaaaaaaaa -> aaaaaaaaaaa
+    | bbbbbbbbbb -> bbbbbbbbbbbbbbbbb)
+  else (
+    match () with
+    | () -> ()
+    | aaaaaaaaaaaa -> aaaaaaaaaaa
+    | bbbbbbbbbb -> bbbbbbbbbbbbbbbbb)
+;;
+
+let if_in_ite () =
+  if true
+  then if cond then aaaaaaaaaaaaaaaaaaaaaaaaaa else bbbbbbbbbbbbbbbbbbbbbbbb
+  else ()
+;;
+
+(* A standalone [begin match … end] keeps its shortcut form regardless of
+   [begin-end-shortcut]: the option only governs [match] cases and
+   [if-then-else] branches, not [begin]/[end] in other positions. *)
+let standalone_match =
+  match foo with
+  | A -> aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  | B -> bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+;;
+
+let standalone_function = function
+  | A -> aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  | B -> bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+;;

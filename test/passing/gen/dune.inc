@@ -201,6 +201,42 @@
  (deps .ocamlformat)
  (package ocamlformat)
  (action
+  (with-stdout-to begin_end_shortcut-disabled.ml.stdout
+   (with-stderr-to begin_end_shortcut-disabled.ml.stderr
+     (run %{bin:ocamlformat} --name begin_end_shortcut-disabled.ml --margin-check --no-begin-end-shortcut %{dep:../tests/begin_end_shortcut.ml})))))
+
+(rule
+ (alias runtest)
+ (package ocamlformat)
+ (action (diff begin_end_shortcut-disabled.ml.ref begin_end_shortcut-disabled.ml.stdout)))
+
+(rule
+ (alias runtest)
+ (package ocamlformat)
+ (action (diff begin_end_shortcut-disabled.ml.err begin_end_shortcut-disabled.ml.stderr)))
+
+(rule
+ (deps .ocamlformat)
+ (package ocamlformat)
+ (action
+  (with-stdout-to begin_end_shortcut.ml.stdout
+   (with-stderr-to begin_end_shortcut.ml.stderr
+     (run %{bin:ocamlformat} --name begin_end_shortcut.ml --margin-check %{dep:../tests/begin_end_shortcut.ml})))))
+
+(rule
+ (alias runtest)
+ (package ocamlformat)
+ (action (diff begin_end_shortcut.ml.ref begin_end_shortcut.ml.stdout)))
+
+(rule
+ (alias runtest)
+ (package ocamlformat)
+ (action (diff begin_end_shortcut.ml.err begin_end_shortcut.ml.stderr)))
+
+(rule
+ (deps .ocamlformat)
+ (package ocamlformat)
+ (action
   (with-stdout-to binders.ml.stdout
    (with-stderr-to binders.ml.stderr
      (run %{bin:ocamlformat} --name binders.ml --margin-check %{dep:../tests/binders.ml})))))
